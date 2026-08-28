@@ -48,11 +48,12 @@ export default async function Home() {
         </OverviewCard>
       </div>
 
-      <div className="grid grid-cols-5 gap-4 mt-8">
-        <div className="col-span-3">
+      <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-5">
+        <div className="md:col-span-3">
           <TasksDueSoon />
         </div>
-        <div className="col-span-2 col-start-4">
+
+        <div className="md:col-span-2">
           <ActiveProjects />
         </div>
       </div>

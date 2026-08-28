@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 1. User Analysis & Core Needs (Step 01)
 
-## Getting Started
+### Who is the user?
 
-First, run the development server:
+- **Primary users**: Small dev/design/marketing teams, agency project managers, freelancers managing client projects
+- **Mixed audience**: Technical and non-technical users
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Top 3 things users want to do:
+
+1. **See project overview at a glance** - Active projects, total tasks, overdue count, completed tasks
+2. **Manage tasks visually on a Kanban board** - View tasks by status (To Do, In Progress, Done), filter by project/assignee
+3. **Create and assign tasks quickly** - Simple form with title, project, assignee, due date, status, priority
+
+### What should the app make easiest on first screen?
+
+The **Dashboard/Overview** shows:
+
+- Active projects count (3 hardcoded)
+- Total tasks (live from data)
+- Overdue tasks (highlighted in red)
+- Completed tasks (highlighted in green)
+- Tasks due in next 7 days (table view)
+- Active projects list
+
+**Why**: Users immediately see what's urgent (overdue), what's coming up (due soon), and project health - no navigation needed.
+
+### Key Task Flow: Create New Task
+
+1. User clicks "Create Task" button (Dashboard header or Task Board header)
+2. Navigates to `/tasks/new` page
+3. Fills form: Title (required), Project (dropdown), Assignee (dropdown), Status (dropdown), Priority (dropdown), Due Date (calendar picker)
+4. Submits → Server Action creates task → Page revalidates → Redirects back to Task Board
+5. New task appears in correct Kanban column based on status
+
+### Assumptions Made:
+
+- **Single team** (no multi-team support)
+- **Multiple projects** supported (3 projects: Website Redesign, Mobile App, Marketing Campaign)
+- **Session-based storage** (per-browser session via cookies + in-memory Map)
+- **No authentication required** (auto-creates session on first visit)
+- **3 fixed statuses**: Todo, In Progress, Done
+- **3 priorities**: Low, Medium, High
+- **4 assignees**: Khaled Farhad, Sadia Rahman, Khaled Shariar, Shantonu Debnath
+
+---
+
+## 2. Additional Features (Beyond Requirements)
+
+| Feature               | Implementation                               |
+| --------------------- | -------------------------------------------- |
+| Server-side rendering | Pages use Server Components by default       |
+| Revalidation          | `revalidatePath` after mutations             |
+| Error boundaries      | Next.js default error handling               |
+| Accessibility         | Semantic HTML, ARIA labels, focus management |
+| Type safety           | Full TypeScript with strict mode             |
+| SEO metadata          | `metadata` export in layout                  |
+
+---
+
+## 3. Project Structure
+
+```
+task-flow/
+├── app/
+│   ├── page.tsx              # Dashboard (Screen 1)
+│   ├── tasks/
+│   │   ├── page.tsx          # Task Board (Screen 2)
+│   │   ├── new/page.tsx      # Create Task (Screen 3)
+│   │   └── [id]/page.tsx     # Edit Task (Screen 3)
+│   ├── layout.tsx            # Root layout with Sidebar
+│   └── globals.css           # Tailwind + theme
+├── components/
+│   ├── home/                 # Dashboard widgets
+│   ├── tasks/                # Task Board components
+│   ├── common/               # Layout (Sidebar, Header)
+│   └── ui/                   # shadcn/ui primitives
+├── lib/
+│   ├── common-data.ts        # Types, sidebar config
+│   └── utils.ts              # cn() helper
+├── actions/
+│   └── task.ts               # Server Actions (CRUD)
+├── hooks/
+│   └── use-mobile.ts         # Responsive hook
+└── public/                   # Static assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 4. Data Flow Architecture
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+┌─────────────┐     ┌──────────────────┐     ┌─────────────────┐
+│  Browser    │────▶│  Next.js Server  │────▶│  In-Memory Map  │
+│  (Client)   │     │  (Server Actions)│     │  (per session)  │
+└─────────────┘     └──────────────────┘     └─────────────────┘
+      │                    │                        │
+      │  HTTP Request      │  JWT Session Cookie    │  Map<sessionId, Task[]>
+      │                    │                        │
+      ▼                    ▼                        ▼
+  UI Updates        createTask()              taskStore.set()
+  (revalidation)    updateTask()              taskStore.get()
+                    deleteTask()
+                    getTasks()
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Email: aftabrishad@gmail.com
+Phone: +880 1707-79984
