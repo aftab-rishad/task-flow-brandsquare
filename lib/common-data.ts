@@ -1,13 +1,7 @@
-import {
-  LayoutDashboard,
-  ListTodo,
-  SavePlus,
-  FolderKanban,
-} from "lucide-react";
+import { LayoutDashboard, ListTodo, SavePlus } from "lucide-react";
 
 export const icons = {
   LayoutDashboard: LayoutDashboard,
-  FolderKanban: FolderKanban,
   ListTodo: ListTodo,
   SavePlus: SavePlus,
 };
@@ -29,12 +23,6 @@ export const sidebarItems: SidebarItem[] = [
     icon: "LayoutDashboard",
   },
   {
-    id: 2,
-    name: "Projects",
-    href: "/projects",
-    icon: "FolderKanban",
-  },
-  {
     id: 3,
     name: "Task Board",
     href: "/tasks",
@@ -47,3 +35,16 @@ export const sidebarItems: SidebarItem[] = [
     icon: "SavePlus",
   },
 ];
+
+export type TaskStatus = "Todo" | "In Progress" | "Done";
+
+export type Task = {
+  id: string;
+  title: string;
+  project: string;
+  assignee: string;
+  dueDate: string;
+  priority: "Low" | "Medium" | "High";
+  status: TaskStatus;
+  createdAt: string;
+};

@@ -41,7 +41,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <AppSidebar />
           <main className="bg-[#0A0A0A] w-full m-2 rounded-2xl">
             <Header />
-            <div className="p-2 flex flex-col justify-center">{children}</div>
+            <div className="p-2 flex flex-col justify-center px-1 md:px-4 lg:px-6 mt-4">
+              {children}
+            </div>
           </main>
         </SidebarProvider>
       </body>
