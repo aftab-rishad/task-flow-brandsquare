@@ -1,3 +1,21 @@
+## Run Locally
+
+For the best performance, use the production build:
+
+```bash
+npm install
+npm run build
+npm start
+```
+
+For faster development with hot reload:
+
+```bash
+npm run dev
+```
+
+---
+
 ## 1. User Analysis & Core Needs (Step 01)
 
 ### Who is the user?
@@ -60,28 +78,30 @@ The **Dashboard/Overview** shows:
 ## 3. Project Structure
 
 ```
+
 task-flow/
 ├── app/
-│   ├── page.tsx              # Dashboard (Screen 1)
-│   ├── tasks/
-│   │   ├── page.tsx          # Task Board (Screen 2)
-│   │   ├── new/page.tsx      # Create Task (Screen 3)
-│   │   └── [id]/page.tsx     # Edit Task (Screen 3)
-│   ├── layout.tsx            # Root layout with Sidebar
-│   └── globals.css           # Tailwind + theme
+│ ├── page.tsx # Dashboard (Screen 1)
+│ ├── tasks/
+│ │ ├── page.tsx # Task Board (Screen 2)
+│ │ ├── new/page.tsx # Create Task (Screen 3)
+│ │ └── [id]/page.tsx # Edit Task (Screen 3)
+│ ├── layout.tsx # Root layout with Sidebar
+│ └── globals.css # Tailwind + theme
 ├── components/
-│   ├── home/                 # Dashboard widgets
-│   ├── tasks/                # Task Board components
-│   ├── common/               # Layout (Sidebar, Header)
-│   └── ui/                   # shadcn/ui primitives
+│ ├── home/ # Dashboard widgets
+│ ├── tasks/ # Task Board components
+│ ├── common/ # Layout (Sidebar, Header)
+│ └── ui/ # shadcn/ui primitives
 ├── lib/
-│   ├── common-data.ts        # Types, sidebar config
-│   └── utils.ts              # cn() helper
+│ ├── common-data.ts # Types, sidebar config
+│ └── utils.ts # cn() helper
 ├── actions/
-│   └── task.ts               # Server Actions (CRUD)
+│ └── task.ts # Server Actions (CRUD)
 ├── hooks/
-│   └── use-mobile.ts         # Responsive hook
-└── public/                   # Static assets
+│ └── use-mobile.ts # Responsive hook
+└── public/ # Static assets
+
 ```
 
 ---
@@ -89,21 +109,27 @@ task-flow/
 ## 4. Data Flow Architecture
 
 ```
-┌─────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│  Browser    │────▶│  Next.js Server  │────▶│  In-Memory Map  │
-│  (Client)   │     │  (Server Actions)│     │  (per session)  │
-└─────────────┘     └──────────────────┘     └─────────────────┘
-      │                    │                        │
-      │  HTTP Request      │  JWT Session Cookie    │  Map<sessionId, Task[]>
-      │                    │                        │
-      ▼                    ▼                        ▼
-  UI Updates        createTask()              taskStore.set()
-  (revalidation)    updateTask()              taskStore.get()
-                    deleteTask()
-                    getTasks()
+
+┌─────────────┐ ┌──────────────────┐ ┌─────────────────┐
+│ Browser │────▶│ Next.js Server │────▶│ In-Memory Map │
+│ (Client) │ │ (Server Actions)│ │ (per session) │
+└─────────────┘ └──────────────────┘ └─────────────────┘
+│ │ │
+│ HTTP Request │ JWT Session Cookie │ Map<sessionId, Task[]>
+│ │ │
+▼ ▼ ▼
+UI Updates createTask() taskStore.set()
+(revalidation) updateTask() taskStore.get()
+deleteTask()
+getTasks()
+
 ```
 
 ---
 
 Email: aftabrishad@gmail.com
 Phone: +880 1707-79984
+
+```
+
+```
